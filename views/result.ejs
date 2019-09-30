@@ -1,0 +1,90 @@
+<% include partials/header %>
+
+<div class="container">
+    <header class="jumbotron" style="background-color:white">
+        <h1>MovieFind</h1>
+        <p>database of movies, series & games</p>
+        <a class="btn btn-primary" href="/">back to search</a>
+    </header>
+</div>
+    
+<div class="container">
+    <% if(movie["Response"]==="False"){ %>
+        <h2 class="text-center">Sorry, no movie found :(</h2>
+    <% }else{ %>
+            <div class="rows text-center" style="display:flex; flex-wrap:wrap;">
+                <% for(var i=0;i<movie["Search"].length;i++){ %>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="thumbnail">
+                            <a href="/movie/<%=movie["Search"][i]["imdbID"]%>">
+                                <div class="caption">
+                                    <h4><%=movie["Search"][i]["Title"]%></h4>
+                                </div>
+                                <% if(movie["Search"][i]["Poster"]!=="N/A"){ %>
+                                    <img src="<%=movie["Search"][i]["Poster"]%>">
+                                <% }else{ %>
+                                    <img src="https://images.stockfreeimages.com/3149/sfixl/31497356.jpg">
+                                <% } %>
+                            </a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+    
+            <% maxPage=Math.ceil(Number(movie['totalResults'])/10); %>
+            <% currentPage=Number(currentPage); %>
+            
+            <% if(currentPage<=4||maxPage<9){%>
+            <%      startPage=1; %>
+            <% }else{%>
+            <%      startPage=currentPage-4; %>
+            <% }%>
+            
+            <% if(currentPage>maxPage-4||maxPage<9){ %>
+            <%      endPage=maxPage; %>
+            <% }else{%>
+            <%      endPage=startPage+8; %>
+            <% }%>
+            
+            <% if(currentPage==1){ %>
+            <%      prevPage=1; %>
+            <% }else{%>
+            <%      prevPage=currentPage-1; %>
+            <% }%>
+            
+            <% if(currentPage==maxPage){ %>
+            <%      nextPage=maxPage; %>
+            <% }else{%>
+            <%      nextPage=currentPage+1; %>
+            <% }%>
+            
+            <div class="rows text-center">
+                <a class="btn" href="<%="/result/?m="+movieName+"&t="+type+"&y="+year%>"> 
+                    <<
+                </a>
+                <a class="btn" href="<%="/result/"+prevPage+"?m="+movieName+"&t="+type+"&y="+year%>"> 
+                    <
+                </a>
+                
+                <% for(var i=startPage;i<=endPage;i++){ %>
+                    <% if(i==currentPage){ %>
+                        <a class="btn btn-primary" href="<%="/result/"+i+"?m="+movieName+"&t="+type+"&y="+year%>"> 
+                             <%=i%>
+                        </a>
+                    <% }else{%>
+                        <a class="btn" href="<%="/result/"+i+"?m="+movieName+"&t="+type+"&y="+year%>"> 
+                             <%=i%>
+                        </a>
+                    <% }%>
+                <%}%>    
+                    
+                <a class="btn" href="<%="/result/"+nextPage+"?m="+movieName+"&t="+type+"&y="+year%>"> 
+                    >
+                </a>
+                <a class="btn" href="<%="/result/"+maxPage+"?m="+movieName+"&t="+type+"&y="+year%>"> 
+                    >>
+                </a>
+            </div>
+    <% } %>
+</div>
+<% include partials/footer %>

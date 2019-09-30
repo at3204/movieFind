@@ -1,0 +1,50 @@
+<% include partials/header %>
+<div class="container">
+        <header class="jumbotron" style="background-color:white">
+            <h1>MovieFind</h1>
+            <p>database of movies, series & games</p>
+            <a class="btn btn-primary" href="/">back to search</a>
+        </header>
+</div>
+
+<div class="container">
+    <h1 class="text-center" style="margin: 4%"><%=movie.Title%></h1>
+    <div class="container" style="width:80%">
+        <div class="thumbnail" style="float:right; margin:0% 5% 3% 5%;">
+            <% if(movie.Poster!=="N/A"){ %>
+                <img src="<%=movie.Poster%>"">
+            <% } %>
+        </div>
+        
+        <% delete movie.Response; %>
+        <% delete movie.Title; %>
+        <% delete movie.Poster; %>
+        <% delete movie.imdbID; %>
+    
+        <% for(var property in movie){ %>
+            <%  if(movie[property] !=="N/A"){ %>
+                 
+                    <%  if(property==="Ratings"){ %>
+                         <p>
+                             <strong>Rating</strong> :
+                         </p>
+                         <% for(var i=0;i< movie["Ratings"].length;i++){ %>
+                            <p>
+                                <smaller>
+                                 <% for(var prop in movie["Ratings"][i]){ %> 
+                                    <%= movie["Ratings"][i][prop] %>
+                                 <% } %>
+                                </smaller>
+                            </p>
+                         <% } %>
+                    <%} else if (property==="Website"){%>
+                         <p><strong>Website</strong> : <a href="<%=movie[property]%>"><%=movie[property]%></a></p>
+                    <%} else {%>
+                         <p><strong><%=property%></strong> : <%=movie[property]%></p>
+                   <%}%>
+             <%}%>
+        <%}%>
+    </div>
+</div>
+
+<% include partials/footer %>
